@@ -1,9 +1,11 @@
 package com.backend.inventory_management.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseResponse<T> {
     private boolean success;
     private String message;

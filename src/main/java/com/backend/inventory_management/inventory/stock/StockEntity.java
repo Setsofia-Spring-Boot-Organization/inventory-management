@@ -18,8 +18,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "stock",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "warehouse_id", "batch_number"}))
+@Table(name = "stock", uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "warehouse_id", "batch_number"}))
 public class StockEntity extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -68,6 +68,9 @@ dependencies {
     // Lombok for tests
     testCompileOnly 'org.projectlombok:lombok:1.18.30'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    implementation 'org.apache.poi:poi:5.3.0'
+    implementation 'org.apache.poi:poi-ooxml:5.4.0'
 }
 
 tasks.named('test') {

@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping(Constants.API_PREFIX + "/stock")
+@RequestMapping(Constants.API_PREFIX + "/stocks")
 @CrossOrigin(origins = "*")
 public class StockController {
 

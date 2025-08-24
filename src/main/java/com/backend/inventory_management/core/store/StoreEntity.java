@@ -50,7 +50,7 @@ public class StoreEntity extends BaseEntity {
     private TenantEntity tenant;
 
     public enum StoreType {
-        SUPERMARKET, ELECTRONICS, CLOTHING, PHARMACY, RESTAURANT, SERVICES, OTHER
+        SUPERMARKET, ELECTRONICS, CLOTHING, PHARMACY, RESTAURANT, SERVICES, RETAIL, WHOLESALE, OTHER
     }
 
     public enum StoreStatus {
