@@ -86,8 +86,7 @@ public class ProductEntity extends BaseEntity {
     // Constructors
     public ProductEntity() {}
 
-    public ProductEntity(String sku, String productName, String barcode, CategoryEntity category, 
-                        BigDecimal costPrice, BigDecimal sellingPrice) {
+    public ProductEntity(String sku, String productName, String barcode, CategoryEntity category, BigDecimal costPrice, BigDecimal sellingPrice) {
         this.sku = sku;
         this.productName = productName;
         this.barcode = barcode;

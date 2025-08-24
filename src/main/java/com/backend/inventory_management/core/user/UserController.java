@@ -2,7 +2,8 @@ package com.backend.inventory_management.core.user;
 
 import com.backend.inventory_management.common.constants.Constants;
 import com.backend.inventory_management.common.dto.BaseResponse;
-import com.backend.inventory_management.core.user.requests.NewUserDto;
+import com.backend.inventory_management.core.user.mapper.UserMapper;
+import com.backend.inventory_management.core.user.requests.UserResponseDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,8 +30,11 @@ public class UserController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<BaseResponse<UserEntity>> createUser(@Valid @RequestBody NewUserDto user) {
+//    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<BaseResponse<UserEntity>> createUser(
+//            @Valid
+            @RequestBody UserEntity user
+    ) {
         try {
             UserEntity createdUser = userService.createUser(user);
             return ResponseEntity.status(HttpStatus.CREATED)
@@ -41,17 +45,20 @@ public class UserController {
         }
     }
 
+
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<BaseResponse<UserEntity>> getUserById(@PathVariable Long id) {
+    public ResponseEntity<BaseResponse<UserResponseDto>> getUserById(@PathVariable Long id) {
         return userService.findById(id)
-                .map(user -> ResponseEntity.ok(BaseResponse.success(user)))
+                .map(user -> ResponseEntity.ok(BaseResponse.success(UserMapper.toDto(user))))
                 .orElse(ResponseEntity.notFound().build());
     }
 
+
+
     @GetMapping
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<BaseResponse<Page<UserEntity>>> getAllUsers(
+    public ResponseEntity<BaseResponse<Page<UserResponseDto>>> getAllUsers(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "firstName") String sortBy,
@@ -66,8 +73,13 @@ public class UserController {
                 userService.searchUsers(search, pageable) :
                 userService.findAllWithPagination(pageable);
 
-        return ResponseEntity.ok(BaseResponse.success(users));
+        Page<UserResponseDto> dtoPage = users.map(UserMapper::toDto);
+
+        return ResponseEntity.ok(BaseResponse.success(dtoPage));
     }
+
+
+
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -120,10 +132,15 @@ public class UserController {
         }
     }
 
+
     @GetMapping("/store/{storeId}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<BaseResponse<List<UserEntity>>> getUsersByStore(@PathVariable Long storeId) {
-        List<UserEntity> users = userService.findByStore(storeId);
-        return ResponseEntity.ok(BaseResponse.success(users));
+    public ResponseEntity<BaseResponse<List<UserResponseDto>>> getUsersByStore(@PathVariable Long storeId) {
+        List<UserResponseDto> dtoList = userService.findByStore(storeId)
+                .stream()
+                .map(UserMapper::toDto)
+                .toList();
+
+        return ResponseEntity.ok(BaseResponse.success(dtoList));
     }
 }
