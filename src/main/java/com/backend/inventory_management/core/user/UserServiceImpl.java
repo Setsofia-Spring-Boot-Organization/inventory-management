@@ -2,6 +2,7 @@ package com.backend.inventory_management.core.user;
 
 import com.backend.inventory_management.common.exception.DuplicateResourceException;
 import com.backend.inventory_management.common.exception.ResourceNotFoundException;
+import com.backend.inventory_management.core.user.requests.NewUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,16 +28,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity createUser(UserEntity user) {
-        if (existsByUsername(user.getUsername())) {
+    public UserEntity createUser(NewUserDto newUserDto) {
+        if (existsByUsername(newUserDto.username())) {
             throw new DuplicateResourceException("Username already exists");
         }
-        if (existsByEmail(user.getEmail())) {
+        if (existsByEmail(newUserDto.email())) {
             throw new DuplicateResourceException("Email already exists");
         }
 
+        UserEntity user = new UserEntity();
+
         // Encode password before saving
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(newUserDto.password()));
 
         // Ensure default values are set
         if (user.getIsActive() == null) {

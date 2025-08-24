@@ -2,6 +2,7 @@ package com.backend.inventory_management.core.user;
 
 import com.backend.inventory_management.common.constants.Constants;
 import com.backend.inventory_management.common.dto.BaseResponse;
+import com.backend.inventory_management.core.user.requests.NewUserDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,7 +30,7 @@ public class UserController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<BaseResponse<UserEntity>> createUser(@Valid @RequestBody UserEntity user) {
+    public ResponseEntity<BaseResponse<UserEntity>> createUser(@Valid @RequestBody NewUserDto user) {
         try {
             UserEntity createdUser = userService.createUser(user);
             return ResponseEntity.status(HttpStatus.CREATED)

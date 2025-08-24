@@ -1,5 +1,6 @@
 package com.backend.inventory_management.core.user;
 
+import com.backend.inventory_management.core.user.requests.NewUserDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -7,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    UserEntity createUser(UserEntity user);
+    UserEntity createUser(NewUserDto user);
     UserEntity updateUser(Long id, UserEntity user);
     Optional<UserEntity> findById(Long id);
     Optional<UserEntity> findByUsername(String username);
