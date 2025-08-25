@@ -19,13 +19,9 @@ public interface StockMovementRepository extends JpaRepository<StockMovementEnti
     List<StockMovementEntity> findByReferenceNumber(String referenceNumber);
 
     @Query("SELECT sm FROM StockMovementEntity sm WHERE sm.createdAt BETWEEN :startDate AND :endDate")
-    List<StockMovementEntity> findByDateRange(@Param("startDate") LocalDateTime startDate,
-                                              @Param("endDate") LocalDateTime endDate);
+    List<StockMovementEntity> findByDateRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
     @Query("SELECT sm FROM StockMovementEntity sm WHERE sm.product.id = :productId AND " +
             "sm.createdAt BETWEEN :startDate AND :endDate ORDER BY sm.createdAt DESC")
-    Page<StockMovementEntity> findProductMovementHistory(@Param("productId") Long productId,
-                                                         @Param("startDate") LocalDateTime startDate,
-                                                         @Param("endDate") LocalDateTime endDate,
-                                                         Pageable pageable);
+    Page<StockMovementEntity> findProductMovementHistory(@Param("productId") Long productId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, Pageable pageable);
 }

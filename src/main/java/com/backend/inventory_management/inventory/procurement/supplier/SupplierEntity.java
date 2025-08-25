@@ -1,4 +1,4 @@
-package com.backend.inventory_management.inventory.procurement;
+package com.backend.inventory_management.inventory.procurement.supplier;
 
 import com.backend.inventory_management.common.entity.BaseEntity;
 import jakarta.persistence.*;

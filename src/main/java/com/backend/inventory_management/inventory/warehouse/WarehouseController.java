@@ -1,11 +1,12 @@
 package com.backend.inventory_management.inventory.warehouse;
 
+import com.backend.inventory_management.common.dto.BaseResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -13,96 +14,96 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class WarehouseController {
-    
+
     private final WarehouseService warehouseService;
-    
+
     @PostMapping
-    public ResponseEntity<WarehouseEntity> createWarehouse(@Valid @RequestBody WarehouseEntity warehouse) {
+    public ResponseEntity<BaseResponse<WarehouseEntity>> createWarehouse(@Valid @RequestBody WarehouseEntity warehouse) {
         try {
             WarehouseEntity createdWarehouse = warehouseService.createWarehouse(warehouse);
-            return new ResponseEntity<>(createdWarehouse, HttpStatus.CREATED);
+            return new ResponseEntity<>(BaseResponse.success("Warehouse created successfully", createdWarehouse), HttpStatus.CREATED);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(BaseResponse.error(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
-    
+
     @GetMapping
-    public ResponseEntity<List<WarehouseEntity>> getAllWarehouses() {
+    public ResponseEntity<BaseResponse<List<WarehouseEntity>>> getAllWarehouses() {
         List<WarehouseEntity> warehouses = warehouseService.getAllWarehouses();
-        return new ResponseEntity<>(warehouses, HttpStatus.OK);
+        return ResponseEntity.ok(BaseResponse.success("Fetched all warehouses", warehouses));
     }
-    
+
     @GetMapping("/{id}")
-    public ResponseEntity<WarehouseEntity> getWarehouseById(@PathVariable Long id) {
+    public ResponseEntity<BaseResponse<WarehouseEntity>> getWarehouseById(@PathVariable Long id) {
         return warehouseService.getWarehouseById(id)
-            .map(warehouse -> new ResponseEntity<>(warehouse, HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(warehouse -> ResponseEntity.ok(BaseResponse.success("Warehouse found", warehouse)))
+                .orElse(new ResponseEntity<>(BaseResponse.error("Warehouse not found with id: " + id), HttpStatus.NOT_FOUND));
     }
-    
+
     @GetMapping("/code/{warehouseCode}")
-    public ResponseEntity<WarehouseEntity> getWarehouseByCode(@PathVariable String warehouseCode) {
+    public ResponseEntity<BaseResponse<WarehouseEntity>> getWarehouseByCode(@PathVariable String warehouseCode) {
         return warehouseService.getWarehouseByCode(warehouseCode)
-            .map(warehouse -> new ResponseEntity<>(warehouse, HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(warehouse -> ResponseEntity.ok(BaseResponse.success("Warehouse found", warehouse)))
+                .orElse(new ResponseEntity<>(BaseResponse.error("Warehouse not found with code: " + warehouseCode), HttpStatus.NOT_FOUND));
     }
-    
+
     @GetMapping("/store/{storeId}")
-    public ResponseEntity<List<WarehouseEntity>> getWarehousesByStore(@PathVariable Long storeId) {
+    public ResponseEntity<BaseResponse<List<WarehouseEntity>>> getWarehousesByStore(@PathVariable Long storeId) {
         List<WarehouseEntity> warehouses = warehouseService.getWarehousesByStore(storeId);
-        return new ResponseEntity<>(warehouses, HttpStatus.OK);
+        return ResponseEntity.ok(BaseResponse.success("Fetched warehouses for store " + storeId, warehouses));
     }
-    
+
     @GetMapping("/store/{storeId}/active")
-    public ResponseEntity<List<WarehouseEntity>> getActiveWarehousesByStore(@PathVariable Long storeId) {
+    public ResponseEntity<BaseResponse<List<WarehouseEntity>>> getActiveWarehousesByStore(@PathVariable Long storeId) {
         List<WarehouseEntity> warehouses = warehouseService.getActiveWarehousesByStore(storeId);
-        return new ResponseEntity<>(warehouses, HttpStatus.OK);
+        return ResponseEntity.ok(BaseResponse.success("Fetched active warehouses for store " + storeId, warehouses));
     }
-    
+
     @GetMapping("/type/{type}")
-    public ResponseEntity<List<WarehouseEntity>> getWarehousesByType(@PathVariable WarehouseEntity.WarehouseType type) {
+    public ResponseEntity<BaseResponse<List<WarehouseEntity>>> getWarehousesByType(@PathVariable WarehouseEntity.WarehouseType type) {
         List<WarehouseEntity> warehouses = warehouseService.getWarehousesByType(type);
-        return new ResponseEntity<>(warehouses, HttpStatus.OK);
+        return ResponseEntity.ok(BaseResponse.success("Fetched warehouses by type: " + type, warehouses));
     }
-    
+
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<WarehouseEntity>> getWarehousesByStatus(@PathVariable WarehouseEntity.WarehouseStatus status) {
+    public ResponseEntity<BaseResponse<List<WarehouseEntity>>> getWarehousesByStatus(@PathVariable WarehouseEntity.WarehouseStatus status) {
         List<WarehouseEntity> warehouses = warehouseService.getWarehousesByStatus(status);
-        return new ResponseEntity<>(warehouses, HttpStatus.OK);
+        return ResponseEntity.ok(BaseResponse.success("Fetched warehouses by status: " + status, warehouses));
     }
-    
+
     @PutMapping("/{id}")
-    public ResponseEntity<WarehouseEntity> updateWarehouse(@PathVariable Long id, @Valid @RequestBody WarehouseEntity warehouse) {
+    public ResponseEntity<BaseResponse<WarehouseEntity>> updateWarehouse(@PathVariable Long id, @Valid @RequestBody WarehouseEntity warehouse) {
         try {
             WarehouseEntity updatedWarehouse = warehouseService.updateWarehouse(id, warehouse);
-            return new ResponseEntity<>(updatedWarehouse, HttpStatus.OK);
+            return ResponseEntity.ok(BaseResponse.success("Warehouse updated successfully", updatedWarehouse));
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(BaseResponse.error(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
-    
+
     @PatchMapping("/{id}/status")
-    public ResponseEntity<WarehouseEntity> updateWarehouseStatus(@PathVariable Long id, @RequestParam WarehouseEntity.WarehouseStatus status) {
+    public ResponseEntity<BaseResponse<WarehouseEntity>> updateWarehouseStatus(@PathVariable Long id, @RequestParam WarehouseEntity.WarehouseStatus status) {
         try {
             WarehouseEntity updatedWarehouse = warehouseService.updateWarehouseStatus(id, status);
-            return new ResponseEntity<>(updatedWarehouse, HttpStatus.OK);
+            return ResponseEntity.ok(BaseResponse.success("Warehouse status updated successfully", updatedWarehouse));
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(BaseResponse.error(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
-    
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteWarehouse(@PathVariable Long id) {
+    public ResponseEntity<BaseResponse<Void>> deleteWarehouse(@PathVariable Long id) {
         try {
             warehouseService.deleteWarehouse(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return ResponseEntity.ok(BaseResponse.success("Warehouse deleted successfully", null));
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(BaseResponse.error(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
-    
+
     @GetMapping("/exists/{warehouseCode}")
-    public ResponseEntity<Boolean> existsByWarehouseCode(@PathVariable String warehouseCode) {
+    public ResponseEntity<BaseResponse<Boolean>> existsByWarehouseCode(@PathVariable String warehouseCode) {
         boolean exists = warehouseService.existsByWarehouseCode(warehouseCode);
-        return new ResponseEntity<>(exists, HttpStatus.OK);
+        return ResponseEntity.ok(BaseResponse.success("Warehouse existence checked", exists));
     }
 }

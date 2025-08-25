@@ -22,9 +22,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final UserRepository userRepository;
 
     @Autowired
-    public NotificationServiceImpl(AlertRepository alertRepository,
-                                   NotificationRepository notificationRepository,
-                                   UserRepository userRepository) {
+    public NotificationServiceImpl(AlertRepository alertRepository, NotificationRepository notificationRepository, UserRepository userRepository) {
         this.alertRepository = alertRepository;
         this.notificationRepository = notificationRepository;
         this.userRepository = userRepository;

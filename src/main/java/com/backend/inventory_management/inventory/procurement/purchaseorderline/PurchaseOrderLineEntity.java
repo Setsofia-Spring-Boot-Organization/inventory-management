@@ -1,7 +1,8 @@
-package com.backend.inventory_management.inventory.procurement.purchaseorder;
+package com.backend.inventory_management.inventory.procurement.purchaseorderline;
 
 import com.backend.inventory_management.common.entity.BaseEntity;
 import com.backend.inventory_management.inventory.catalog.product.ProductEntity;
+import com.backend.inventory_management.inventory.procurement.purchaseorder.PurchaseOrderEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

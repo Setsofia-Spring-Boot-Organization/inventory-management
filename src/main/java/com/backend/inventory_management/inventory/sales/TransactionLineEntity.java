@@ -47,8 +47,7 @@ public class TransactionLineEntity extends BaseEntity {
     // Constructors
     public TransactionLineEntity() {}
 
-    public TransactionLineEntity(TransactionEntity transaction, ProductEntity product, 
-                               Integer lineNumber, Integer quantity, BigDecimal unitPrice) {
+    public TransactionLineEntity(TransactionEntity transaction, ProductEntity product, Integer lineNumber, Integer quantity, BigDecimal unitPrice) {
         this.transaction = transaction;
         this.product = product;
         this.lineNumber = lineNumber;

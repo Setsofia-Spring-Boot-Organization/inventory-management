@@ -7,13 +7,18 @@ import com.backend.inventory_management.inventory.catalog.product.ProductEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "alerts")
 public class AlertEntity extends BaseEntity {
-    
+
+    // Getters and setters
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Alert type is required")
     @Column(name = "alert_type", nullable = false)
@@ -109,127 +114,6 @@ public class AlertEntity extends BaseEntity {
         this.message = message;
     }
 
-    // Getters and setters
-    public AlertType getAlertType() {
-        return alertType;
-    }
-
-    public void setAlertType(AlertType alertType) {
-        this.alertType = alertType;
-    }
-
-    public AlertSeverity getSeverity() {
-        return severity;
-    }
-
-    public void setSeverity(AlertSeverity severity) {
-        this.severity = severity;
-    }
-
-    public AlertStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(AlertStatus status) {
-        this.status = status;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public StoreEntity getStore() {
-        return store;
-    }
-
-    public void setStore(StoreEntity store) {
-        this.store = store;
-    }
-
-    public ProductEntity getProduct() {
-        return product;
-    }
-
-    public void setProduct(ProductEntity product) {
-        this.product = product;
-    }
-
-    public UserEntity getAssignedTo() {
-        return assignedTo;
-    }
-
-    public void setAssignedTo(UserEntity assignedTo) {
-        this.assignedTo = assignedTo;
-    }
-
-    public UserEntity getAcknowledgedBy() {
-        return acknowledgedBy;
-    }
-
-    public void setAcknowledgedBy(UserEntity acknowledgedBy) {
-        this.acknowledgedBy = acknowledgedBy;
-    }
-
-    public LocalDateTime getAcknowledgedAt() {
-        return acknowledgedAt;
-    }
-
-    public void setAcknowledgedAt(LocalDateTime acknowledgedAt) {
-        this.acknowledgedAt = acknowledgedAt;
-    }
-
-    public UserEntity getResolvedBy() {
-        return resolvedBy;
-    }
-
-    public void setResolvedBy(UserEntity resolvedBy) {
-        this.resolvedBy = resolvedBy;
-    }
-
-    public LocalDateTime getResolvedAt() {
-        return resolvedAt;
-    }
-
-    public void setResolvedAt(LocalDateTime resolvedAt) {
-        this.resolvedAt = resolvedAt;
-    }
-
-    public String getResolutionNotes() {
-        return resolutionNotes;
-    }
-
-    public void setResolutionNotes(String resolutionNotes) {
-        this.resolutionNotes = resolutionNotes;
-    }
-
-    public String getReferenceData() {
-        return referenceData;
-    }
-
-    public void setReferenceData(String referenceData) {
-        this.referenceData = referenceData;
-    }
-
-    public Boolean getNotificationSent() {
-        return notificationSent;
-    }
-
-    public void setNotificationSent(Boolean notificationSent) {
-        this.notificationSent = notificationSent;
-    }
-    
     @Override
     public String toString() {
         return "AlertEntity{" +

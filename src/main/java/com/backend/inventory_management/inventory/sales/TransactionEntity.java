@@ -97,6 +97,7 @@ public class TransactionEntity extends BaseEntity {
         this.store = store;
         this.cashier = cashier;
         this.transactionDateTime = transactionDateTime;
+        calculateTotals();
     }
 
     // Helper method to calculate totals

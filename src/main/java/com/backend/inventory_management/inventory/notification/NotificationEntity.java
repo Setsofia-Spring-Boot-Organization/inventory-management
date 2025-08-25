@@ -99,6 +99,7 @@ public class NotificationEntity extends BaseEntity {
         }
     }
 
+    @Getter
     public enum PriorityLevel {
         LOW("LOW", 1),
         MEDIUM("MEDIUM", 2),
@@ -111,14 +112,6 @@ public class NotificationEntity extends BaseEntity {
         PriorityLevel(String value, int priority) {
             this.value = value;
             this.priority = priority;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public int getPriority() {
-            return priority;
         }
 
         public static PriorityLevel fromValue(String value) {
