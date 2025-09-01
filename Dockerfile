@@ -1,34 +1,28 @@
-# Step 1: Use a lightweight JDK base image
-FROM eclipse-temurin:21-jdk-jammy as builder
-
-# Step 2: Set working directory inside container
+# ---- Build stage ----
+FROM gradle:8.10.0-jdk21 AS build
 WORKDIR /app
 
-# Step 3: Copy Gradle wrapper and build files first (to leverage caching)
-COPY gradlew .
+# Copy Gradle wrapper and build files first (for caching dependencies)
+COPY build.gradle settings.gradle gradlew ./
 COPY gradle gradle
-COPY build.gradle settings.gradle ./
 
-# Step 4: Download dependencies (cached in Docker layers)
+# Download dependencies
 RUN ./gradlew dependencies --no-daemon || return 0
 
-# Step 5: Copy the entire project
+# Copy project files
 COPY . .
 
-# Step 6: Build the application (skip tests for faster build)
+# Build the application (skip tests for faster build)
 RUN ./gradlew clean build -x test --no-daemon
 
-# Step 7: Use a smaller runtime image
-FROM eclipse-temurin:21-jre-jammy
-
-# Step 8: Set working directory
+# ---- Runtime stage ----
+FROM eclipse-temurin:21-jre
 WORKDIR /app
 
-# Step 9: Copy the built JAR from builder stage
-COPY --from=builder /app/build/libs/*.jar app.jar
+# Copy the fat jar from build stage
+COPY --from=build /app/build/libs/*.jar inventory-management.jar
 
-# Step 10: Expose port (Render uses PORT env variable anyway)
+# Expose port (Render will override with $PORT)
 EXPOSE 8080
 
-# Step 11: Run the application
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java", "-jar", "inventory-management.jar"]
