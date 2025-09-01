@@ -1,28 +1,53 @@
 package com.backend.inventory_management.core;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.NoArgsConstructor;
 
-@Builder
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Response<T> {
-    private int statusCode;
+    private boolean success;
     private String message;
     private T data;
+    private String timestamp;
 
-    public ResponseEntity<Response<?>> responseEntity(HttpStatus httpStatus, String message) {
-        this.statusCode = httpStatus.value();
-        this.message = message;
-        return ResponseEntity.status(httpStatus).body(
-                Response.builder()
-                        .statusCode(this.statusCode)
-                        .message(this.message)
-                        .data(this.data)
-                        .build()
-        );
+    public static <T> Response<T> success(T data) {
+        return Response.<T>builder()
+                .success(true)
+                .message("Operation successful")
+                .data(data)
+                .timestamp(java.time.Instant.now().toString())
+                .build();
+    }
+
+    public static <T> Response<T> success(T data, String message) {
+        return Response.<T>builder()
+                .success(true)
+                .message(message)
+                .data(data)
+                .timestamp(java.time.Instant.now().toString())
+                .build();
+    }
+
+    public static <T> Response<T> error(String message) {
+        return Response.<T>builder()
+                .success(false)
+                .message(message)
+                .data(null)
+                .timestamp(java.time.Instant.now().toString())
+                .build();
+    }
+
+    public static <T> Response<T> error(String message, T data) {
+        return Response.<T>builder()
+                .success(false)
+                .message(message)
+                .data(data)
+                .timestamp(java.time.Instant.now().toString())
+                .build();
     }
 }
