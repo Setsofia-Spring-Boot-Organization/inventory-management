@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,25 +22,25 @@ import java.util.stream.Collectors;
 public class InventoryServiceImpl implements InventoryService {
     
     private final InventoryItemRepository inventoryItemRepository;
-    
+
     @Override
     public Page<InventoryItemDto> getAllItems(InventoryFilterDto filter) {
         Sort sort = Sort.by(
-            "desc".equalsIgnoreCase(filter.getSortDirection()) 
-                ? Sort.Direction.DESC 
-                : Sort.Direction.ASC,
-            filter.getSortBy()
+                "desc".equalsIgnoreCase(filter.getSortDirection())
+                        ? Sort.Direction.DESC
+                        : Sort.Direction.ASC,
+                filter.getSortBy()
         );
-        
+
         Pageable pageable = PageRequest.of(filter.getPage(), filter.getSize(), sort);
-        
-        Page<InventoryItem> items = inventoryItemRepository.search(
-            filter.getSearchTerm(),
-            pageable
-        );
-        
+
+        Specification<InventoryItem> spec = InventoryItemSpecifications.searchByKeyword(filter.getSearchTerm());
+
+        Page<InventoryItem> items = inventoryItemRepository.findAll(spec, pageable);
+
         return items.map(this::convertToDto);
     }
+
     
     @Override
     public InventoryItemDto getItemById(Long id) {

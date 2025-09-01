@@ -4,26 +4,27 @@ package com.backend.inventory_management.features.inventory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
+
 
 @Repository
-public interface InventoryItemRepository extends JpaRepository<InventoryItem, Long> {
+public interface InventoryItemRepository extends JpaRepository<InventoryItem, Long>, JpaSpecificationExecutor<InventoryItem> {
     
     // Search functionality
     @Query("SELECT i FROM InventoryItem i WHERE " +
             "(:searchKey IS NULL OR " +
-            "LOWER(CONCAT(i.name, ' ', i.category, ' ', i.supplier)) LIKE LOWER(CONCAT('%', :searchKey, '%')))")
+            "LOWER(CONCAT(i.name, ' ', CAST(i.category AS string), ' ', CAST(i.supplier AS string))) " +
+            "LIKE LOWER(CONCAT('%', :searchKey, '%')))")
     Page<InventoryItem> search(
             @Param("searchKey") String searchKey,
             Pageable pageable
     );
-
 
     
     // Find by category
