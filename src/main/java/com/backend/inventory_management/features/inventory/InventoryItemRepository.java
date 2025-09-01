@@ -17,19 +17,14 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, Lo
     
     // Search functionality
     @Query("SELECT i FROM InventoryItem i WHERE " +
-           "(:searchTerm IS NULL OR LOWER(i.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
-           "LOWER(i.category) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
-           "LOWER(i.supplier) LIKE LOWER(CONCAT('%', :searchTerm, '%'))) AND " +
-           "(:category IS NULL OR i.category = :category) AND " +
-           "(:supplier IS NULL OR i.supplier = :supplier) AND " +
-           "(:status IS NULL OR i.status = :status)")
-    Page<InventoryItem> findWithFilters(
-        @Param("searchTerm") String searchTerm,
-        @Param("category") String category,
-        @Param("supplier") String supplier,
-        @Param("status") StockStatus status,
-        Pageable pageable
+            "(:searchKey IS NULL OR " +
+            "LOWER(CONCAT(i.name, ' ', i.category, ' ', i.supplier)) LIKE LOWER(CONCAT('%', :searchKey, '%')))")
+    Page<InventoryItem> search(
+            @Param("searchKey") String searchKey,
+            Pageable pageable
     );
+
+
     
     // Find by category
     List<InventoryItem> findByCategory(String category);

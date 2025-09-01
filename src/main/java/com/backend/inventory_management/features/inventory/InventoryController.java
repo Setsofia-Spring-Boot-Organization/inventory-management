@@ -25,9 +25,6 @@ public class InventoryController {
     @GetMapping
     public ResponseEntity<Response<Page<InventoryItemDto>>> getAllItems(
             @RequestParam(required = false) String searchTerm,
-            @RequestParam(required = false) String category,
-            @RequestParam(required = false) String supplier,
-            @RequestParam(required = false) StockStatus status,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(defaultValue = "name") String sortBy,
@@ -36,9 +33,6 @@ public class InventoryController {
         try {
             InventoryFilterDto filter = InventoryFilterDto.builder()
                 .searchTerm(searchTerm)
-                .category(category)
-                .supplier(supplier)
-                .status(status)
                 .page(page)
                 .size(size)
                 .sortBy(sortBy)

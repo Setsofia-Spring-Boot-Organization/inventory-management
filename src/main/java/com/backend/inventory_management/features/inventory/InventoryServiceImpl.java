@@ -33,11 +33,8 @@ public class InventoryServiceImpl implements InventoryService {
         
         Pageable pageable = PageRequest.of(filter.getPage(), filter.getSize(), sort);
         
-        Page<InventoryItem> items = inventoryItemRepository.findWithFilters(
+        Page<InventoryItem> items = inventoryItemRepository.search(
             filter.getSearchTerm(),
-            filter.getCategory(),
-            filter.getSupplier(),
-            filter.getStatus(),
             pageable
         );
         

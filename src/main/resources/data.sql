@@ -2,8 +2,7 @@
 -- Insert sample users (password is 'admin123' encoded with BCrypt)
 INSERT INTO users (username, password, email, first_name, last_name, role, created_at, updated_at, enabled) VALUES
                                                                                                                 ('admin', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'admin@inventorymanager.com', 'System', 'Administrator', 'ADMIN', NOW(), NOW(), true),
-                                                                                                                ('manager', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'manager@inventorymanager.com', 'John', 'Manager', 'MANAGER', NOW(), NOW(), true),
-                                                                                                                ('user', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'user@inventorymanager.com', 'Jane', 'User', 'USER', NOW(), NOW(), true);
+                                                                                                                ('manager', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.', 'manager@inventorymanager.com', 'John', 'Manager', 'MANAGER', NOW(), NOW(), true);
 
 -- Insert sample categories
 INSERT INTO categories (name, description, created_at, updated_at) VALUES
