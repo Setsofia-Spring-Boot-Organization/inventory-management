@@ -9,10 +9,10 @@ COPY gradle gradle
 # Ensure gradlew is executable
 RUN chmod +x gradlew
 
-# Download dependencies
+# Download dependencies (cached in Docker layers)
 RUN ./gradlew dependencies --no-daemon || return 0
 
-# Copy project files
+# Copy the rest of the project
 COPY . .
 
 # Build the application (skip tests for faster build)
@@ -25,7 +25,7 @@ WORKDIR /app
 # Copy the fat jar from build stage
 COPY --from=build /app/build/libs/*.jar inventory-management.jar
 
-# Expose port (Render will override with $PORT)
+# Expose port (Render sets $PORT anyway)
 EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "inventory-management.jar"]
