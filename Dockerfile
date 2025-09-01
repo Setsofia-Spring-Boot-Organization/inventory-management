@@ -3,10 +3,11 @@ FROM gradle:8.10.0-jdk21 AS build
 WORKDIR /app
 
 # Copy Gradle wrapper and build files
-COPY build.gradle settings.gradle gradlew ./
-COPY gradle gradle
+COPY build.gradle settings.gradle ./
+COPY gradlew ./
+COPY gradle gradle/
 
-# Ensure gradlew is executable
+# Ensure gradlew is executable (fix for permission denied error)
 RUN chmod +x gradlew
 
 # Download dependencies (cached in Docker layers)
