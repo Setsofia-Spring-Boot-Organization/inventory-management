@@ -2,9 +2,12 @@
 FROM gradle:8.10.0-jdk21 AS build
 WORKDIR /app
 
-# Copy Gradle wrapper and build files first (for caching dependencies)
+# Copy Gradle wrapper and build files
 COPY build.gradle settings.gradle gradlew ./
 COPY gradle gradle
+
+# Ensure gradlew is executable
+RUN chmod +x gradlew
 
 # Download dependencies
 RUN ./gradlew dependencies --no-daemon || return 0
